@@ -652,6 +652,13 @@ module.exports = grammar({
               // Higher dynamic precedence so `[[…]]` wins over two adjacent
               // `[` link_text starts.
               prec.dynamic(2 * ELEMENT_PRECEDENCE, $.wikilink),
+              // djot-php MentionsExtension: @user / @user-name / @user_name.
+              // Matches djot-php's own /@([a-zA-Z0-9_-]+)/ pattern. Note the
+              // limitation this inherits: email fragments like "me@example.com"
+              // will tokenize the "@example" portion as a mention. Same
+              // behavior as djot-php's parser; the convention is "use mentions
+              // away from email-like contexts."
+              prec.dynamic(ELEMENT_PRECEDENCE, $.mention),
               $.autolink,
               $.verbatim,
               alias($.inline_math, $.math),
@@ -694,6 +701,13 @@ module.exports = grammar({
     backslash_escape: (_) => /\\[^\r\n]/,
 
     autolink: (_) => seq("<", /[^>\s]+/, ">"),
+
+    // djot-php MentionsExtension. Syntax: `@user` where user is
+    // [a-zA-Z0-9_-]+ starting with an alnum to avoid `@-` style accidents.
+    // First-char alnum requirement is a mild mitigation only; see comment
+    // at the inline-choice site for the email false-positive caveat.
+    mention: (_) =>
+      token(seq("@", /[a-zA-Z0-9][a-zA-Z0-9_-]*/)),
 
     // djot-php WikilinksExtension. Syntax: `[[target]]` or `[[target|label]]`.
     //

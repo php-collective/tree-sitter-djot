@@ -331,6 +331,10 @@
           "named": true
         },
         {
+          "type": "mention",
+          "named": true
+        },
+        {
           "type": "note",
           "named": true
         },
@@ -1049,6 +1053,10 @@
           "named": true
         },
         {
+          "type": "mention",
+          "named": true
+        },
+        {
           "type": "note",
           "named": true
         },
@@ -1355,6 +1363,10 @@
           "named": true
         },
         {
+          "type": "mention",
+          "named": true
+        },
+        {
           "type": "note",
           "named": true
         },
@@ -1524,6 +1536,10 @@
         },
         {
           "type": "math",
+          "named": true
+        },
+        {
+          "type": "mention",
           "named": true
         },
         {
@@ -1959,6 +1975,10 @@
         },
         {
           "type": "math",
+          "named": true
+        },
+        {
+          "type": "mention",
           "named": true
         },
         {
@@ -2536,6 +2556,10 @@
           "named": true
         },
         {
+          "type": "mention",
+          "named": true
+        },
+        {
           "type": "note",
           "named": true
         },
@@ -2728,6 +2752,10 @@
         },
         {
           "type": "math",
+          "named": true
+        },
+        {
+          "type": "mention",
           "named": true
         },
         {
@@ -3115,6 +3143,10 @@
   },
   {
     "type": "math_marker_end",
+    "named": true
+  },
+  {
+    "type": "mention",
     "named": true
   },
   {
