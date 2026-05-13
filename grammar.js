@@ -59,6 +59,7 @@ module.exports = grammar({
         alias($.block_math, $.math),
         $.link_reference_definition,
         $.abbreviation_definition,
+        $.fenced_comment_block,
         $.block_attribute,
         $._paragraph,
       ),
@@ -539,6 +540,25 @@ module.exports = grammar({
         $._newline,
       ),
     link_destination: (_) => /\S+/,
+
+    // djot-php fenced comment block: %%%...%%%. Multi-line block-level
+    // comment that may contain blank lines (unlike the inline {%...%} form).
+    //
+    // Captured as a single token so the lexer commits only when a closing
+    // fence is found. An unterminated opening `%%%` (mid-typing) falls
+    // through to text. Restriction: closing `%%%` must be at column 0, on
+    // its own line; nesting inside divs/lists is not handled (acceptable
+    // for v1 — vast majority of usage is top-level draft commentary).
+    fenced_comment_block: (_) =>
+      token(
+        seq(
+          "%%%",
+          /[^\n]*\n/,
+          /(?:[^%\n][^\n]*\n|%[^%\n][^\n]*\n|%%[^%\n][^\n]*\n|\n)*/,
+          "%%%",
+          /\n?/,
+        ),
+      ),
 
     // djot-php abbreviation definitions (PHP Markdown Extra style).
     //   *[HTML]: HyperText Markup Language

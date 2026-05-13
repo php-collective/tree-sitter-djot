@@ -146,3 +146,43 @@ Abbreviation definition: strong-emphasis with bracketed-link stays as strong
       (strong_begin)
       (content)
       (strong_end))))
+
+===============================================================================
+Fenced comment block: simple
+===============================================================================
+%%%
+This is a draft comment.
+%%%
+
+-------------------------------------------------------------------------------
+
+(document
+  (fenced_comment_block))
+
+===============================================================================
+Fenced comment block: spans blank lines and paragraphs
+===============================================================================
+%%%
+First paragraph of the comment.
+
+Second paragraph.
+%%%
+
+Body text after.
+
+-------------------------------------------------------------------------------
+
+(document
+  (fenced_comment_block)
+  (paragraph))
+
+===============================================================================
+Fenced comment block: unterminated falls through to text
+===============================================================================
+%%%
+Still typing the comment
+
+-------------------------------------------------------------------------------
+
+(document
+  (paragraph))

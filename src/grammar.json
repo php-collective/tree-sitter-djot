@@ -187,6 +187,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "fenced_comment_block"
+        },
+        {
+          "type": "SYMBOL",
           "name": "block_attribute"
         },
         {
@@ -2599,6 +2603,34 @@
     "link_destination": {
       "type": "PATTERN",
       "value": "\\S+"
+    },
+    "fenced_comment_block": {
+      "type": "TOKEN",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "%%%"
+          },
+          {
+            "type": "PATTERN",
+            "value": "[^\\n]*\\n"
+          },
+          {
+            "type": "PATTERN",
+            "value": "(?:[^%\\n][^\\n]*\\n|%[^%\\n][^\\n]*\\n|%%[^%\\n][^\\n]*\\n|\\n)*"
+          },
+          {
+            "type": "STRING",
+            "value": "%%%"
+          },
+          {
+            "type": "PATTERN",
+            "value": "\\n?"
+          }
+        ]
+      }
     },
     "abbreviation_definition": {
       "type": "SEQ",

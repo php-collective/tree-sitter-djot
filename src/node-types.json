@@ -297,6 +297,10 @@
           "named": true
         },
         {
+          "type": "fenced_comment_block",
+          "named": true
+        },
+        {
           "type": "fixme",
           "named": true
         },
@@ -460,6 +464,10 @@
           "named": true
         },
         {
+          "type": "fenced_comment_block",
+          "named": true
+        },
+        {
           "type": "footnote",
           "named": true
         },
@@ -610,6 +618,10 @@
         },
         {
           "type": "div",
+          "named": true
+        },
+        {
+          "type": "fenced_comment_block",
           "named": true
         },
         {
@@ -766,6 +778,10 @@
         },
         {
           "type": "div",
+          "named": true
+        },
+        {
+          "type": "fenced_comment_block",
           "named": true
         },
         {
@@ -1811,6 +1827,10 @@
           "named": true
         },
         {
+          "type": "fenced_comment_block",
+          "named": true
+        },
+        {
           "type": "footnote",
           "named": true
         },
@@ -2259,6 +2279,10 @@
         },
         {
           "type": "div",
+          "named": true
+        },
+        {
+          "type": "fenced_comment_block",
           "named": true
         },
         {
@@ -3069,6 +3093,10 @@
   },
   {
     "type": "en_dash",
+    "named": true
+  },
+  {
+    "type": "fenced_comment_block",
     "named": true
   },
   {
