@@ -312,3 +312,96 @@ inner triple-percent stays as content
 
 (document
   (fenced_comment_block))
+
+===============================================================================
+Boolean attribute shorthand: bare key in block_attribute
+===============================================================================
+{reversed}
+1. Third
+2. Second
+
+-------------------------------------------------------------------------------
+
+(document
+  (block_attribute
+    args: (args
+      (boolean_attribute
+        (key))))
+  (list
+    (list_item
+      marker: (list_marker_decimal_period)
+      content: (list_item_content
+        (paragraph)))
+    (list_item
+      marker: (list_marker_decimal_period)
+      content: (list_item_content
+        (paragraph)))))
+
+===============================================================================
+Boolean attribute: mixed with class and key_value
+===============================================================================
+{flag .cls #id key=value other}
+Text.
+
+-------------------------------------------------------------------------------
+
+(document
+  (block_attribute
+    args: (args
+      (boolean_attribute
+        (key))
+      (class)
+      (identifier)
+      (key_value
+        key: (key)
+        value: (value))
+      (boolean_attribute
+        (key))))
+  (paragraph))
+
+===============================================================================
+Boolean attribute: curly emphasis {_text_} still parses as emphasis
+===============================================================================
+{_yes_}
+
+-------------------------------------------------------------------------------
+
+(document
+  (paragraph
+    (emphasis
+      begin_marker: (emphasis_begin)
+      content: (content)
+      end_marker: (emphasis_end))))
+
+===============================================================================
+Task list: underscore is unchecked (djot-php enhancement)
+===============================================================================
+- [_] underscore form
+- [ ] space form
+- [x] checked
+- [X] also checked
+
+-------------------------------------------------------------------------------
+
+(document
+  (list
+    (list_item
+      marker: (list_marker_task
+        checkmark: (unchecked))
+      content: (list_item_content
+        (paragraph)))
+    (list_item
+      marker: (list_marker_task
+        checkmark: (unchecked))
+      content: (list_item_content
+        (paragraph)))
+    (list_item
+      marker: (list_marker_task
+        checkmark: (checked))
+      content: (list_item_content
+        (paragraph)))
+    (list_item
+      marker: (list_marker_task
+        checkmark: (checked))
+      content: (list_item_content
+        (paragraph)))))

@@ -1202,14 +1202,15 @@ static TokenType scan_ordered_list_marker_token(Scanner *s, TSLexer *lexer) {
   }
 }
 
-// Scans a task marker box, e.g. `[x] `.
+// Scans a task marker box, e.g. `[x] ` or `[ ] ` or `[_] ` (djot-php
+// underscore-as-unchecked extension).
 static bool scan_task_list_marker(Scanner *s, TSLexer *lexer) {
   if (lexer->lookahead != '[') {
     return false;
   }
   advance(s, lexer);
   if (lexer->lookahead != 'x' && lexer->lookahead != 'X' &&
-      lexer->lookahead != ' ') {
+      lexer->lookahead != ' ' && lexer->lookahead != '_') {
     return false;
   }
   advance(s, lexer);
@@ -2268,14 +2269,27 @@ static bool parse_open_curly_bracket(Scanner *s, TSLexer *lexer,
         return false;
       }
       break;
-    default:
+    default: {
       can_be_inline_comment = false;
-      // First scan a key
+      // Remember whether the first identifier char is alphanumeric (not `_`
+      // or `-`). djot-php Boolean Attribute Shorthand requires this so a
+      // curly-emphasis form like `{_text_}` is NOT mistaken for a bare key
+      // — only letters/digits-leading identifiers are valid as boolean
+      // attributes here.
+      bool first_is_alnum = djot_is_alnum_ascii(lexer->lookahead);
       if (!scan_identifier(s, lexer)) {
         return false;
       }
-      // Must have equals
+      // djot-php Boolean Attribute Shorthand: a bare `key` (no `=value`)
+      // is accepted as long as it starts with an alnum char and is
+      // followed by a valid attribute boundary — `}`, whitespace, or
+      // newline.
       if (lexer->lookahead != '=') {
+        if (first_is_alnum &&
+            (lexer->lookahead == '}' || lexer->lookahead == ' ' ||
+             lexer->lookahead == '\t' || lexer->lookahead == '\n')) {
+          break;
+        }
         return false;
       }
       advance(s, lexer);
@@ -2283,6 +2297,7 @@ static bool parse_open_curly_bracket(Scanner *s, TSLexer *lexer,
       if (!scan_value(s, lexer)) {
         return false;
       }
+    }
     }
   }
   return false;

@@ -682,8 +682,17 @@
           "value": "["
         },
         {
-          "type": "STRING",
-          "value": " "
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": " "
+            },
+            {
+              "type": "STRING",
+              "value": "_"
+            }
+          ]
         },
         {
           "type": "STRING",
@@ -2890,6 +2899,10 @@
                     "name": "key_value"
                   },
                   {
+                    "type": "SYMBOL",
+                    "name": "boolean_attribute"
+                  },
+                  {
                     "type": "ALIAS",
                     "content": {
                       "type": "SYMBOL",
@@ -2984,6 +2997,10 @@
           }
         }
       ]
+    },
+    "boolean_attribute": {
+      "type": "SYMBOL",
+      "name": "key"
     },
     "key": {
       "type": "SYMBOL",
@@ -4232,6 +4249,10 @@
                 {
                   "type": "SYMBOL",
                   "name": "key_value"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "boolean_attribute"
                 },
                 {
                   "type": "ALIAS",

@@ -160,7 +160,10 @@ module.exports = grammar({
         $._whitespace1,
       ),
     checked: (_) => seq("[", choice("x", "X"), "]"),
-    unchecked: (_) => seq("[", " ", "]"),
+    // djot-php Task List Underscore Notation enhancement: `[_]` is an
+    // alternative to `[ ]` for unchecked task items. The grammar still
+    // emits a single `unchecked` node for either form.
+    unchecked: (_) => seq("[", choice(" ", "_"), "]"),
 
     _list_definition: ($) =>
       seq(repeat1(alias($._list_item_definition, $.list_item)), $._block_close),
@@ -664,6 +667,12 @@ module.exports = grammar({
                 $.class,
                 $.identifier,
                 $.key_value,
+                // djot-php Boolean Attribute Shorthand: a bare key like
+                // `{reversed}` is equivalent to `{reversed=reversed}` /
+                // `{reversed=true}`. Must come after key_value in the
+                // grammar's resolution order so `flag=value` still picks
+                // key_value (the parser looks ahead for `=`).
+                $.boolean_attribute,
                 alias($._comment, $.comment),
                 $._whitespace1,
                 $._newline,
@@ -678,6 +687,7 @@ module.exports = grammar({
     class: ($) => seq(".", alias($.class_name, "class")),
     identifier: (_) => token(seq("#", token.immediate(/[^\s\}]+/))),
     key_value: ($) => seq(field("key", $.key), "=", field("value", $.value)),
+    boolean_attribute: ($) => $.key,
     key: ($) => $._id,
     value: (_) => choice(seq('"', /[^"\n]+/, '"'), /\w+/),
 
@@ -1006,6 +1016,7 @@ module.exports = grammar({
               $.class,
               $.identifier,
               $.key_value,
+              $.boolean_attribute,
               alias($._comment, $.comment),
               $._whitespace1,
               $._newline_inline,
