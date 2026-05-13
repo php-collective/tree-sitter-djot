@@ -183,6 +183,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "abbreviation_definition"
+        },
+        {
+          "type": "SYMBOL",
           "name": "block_attribute"
         },
         {
@@ -2595,6 +2599,70 @@
     "link_destination": {
       "type": "PATTERN",
       "value": "\\S+"
+    },
+    "abbreviation_definition": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "TOKEN",
+            "content": {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "*["
+                },
+                {
+                  "type": "PATTERN",
+                  "value": "[^\\]\\r\\n]+"
+                },
+                {
+                  "type": "STRING",
+                  "value": "]:"
+                }
+              ]
+            }
+          },
+          "named": true,
+          "value": "abbreviation_marker"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "_whitespace1"
+                },
+                {
+                  "type": "FIELD",
+                  "name": "expansion",
+                  "content": {
+                    "type": "ALIAS",
+                    "content": {
+                      "type": "PATTERN",
+                      "value": "[^\\r\\n]+"
+                    },
+                    "named": true,
+                    "value": "abbreviation_expansion"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_newline"
+        }
+      ]
     },
     "block_attribute": {
       "type": "SEQ",

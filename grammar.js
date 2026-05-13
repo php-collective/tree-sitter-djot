@@ -58,6 +58,7 @@ module.exports = grammar({
         $.block_quote,
         alias($.block_math, $.math),
         $.link_reference_definition,
+        $.abbreviation_definition,
         $.block_attribute,
         $._paragraph,
       ),
@@ -538,6 +539,33 @@ module.exports = grammar({
         $._newline,
       ),
     link_destination: (_) => /\S+/,
+
+    // djot-php abbreviation definitions (PHP Markdown Extra style).
+    //   *[HTML]: HyperText Markup Language
+    //
+    // Single-line block. The `*[KEY]:` opener is matched as one token so the
+    // lexer only commits when the complete pattern is on the line. That keeps
+    // `*[*](y)` style strong-emphasis-with-inner-link from being grabbed.
+    // Trade-off: key is not a separate child capture; the whole `*[KEY]:`
+    // shows up as `abbreviation_marker`. Highlight queries can still color
+    // the whole line uniformly.
+    abbreviation_definition: ($) =>
+      seq(
+        alias(
+          token(seq("*[", /[^\]\r\n]+/, "]:")),
+          $.abbreviation_marker,
+        ),
+        optional(
+          seq(
+            $._whitespace1,
+            field(
+              "expansion",
+              alias(/[^\r\n]+/, $.abbreviation_expansion),
+            ),
+          ),
+        ),
+        $._newline,
+      ),
 
     block_attribute: ($) =>
       seq(

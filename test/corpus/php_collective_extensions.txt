@@ -101,3 +101,48 @@ Use @@ literally in code.
 
 (document
   (paragraph))
+
+===============================================================================
+Abbreviation definition: single
+===============================================================================
+*[HTML]: HyperText Markup Language
+
+-------------------------------------------------------------------------------
+
+(document
+  (abbreviation_definition
+    (abbreviation_marker)
+    expansion: (abbreviation_expansion)))
+
+===============================================================================
+Abbreviation definition: multiple
+===============================================================================
+*[HTML]: HyperText Markup Language
+*[CSS]: Cascading Style Sheets
+
+Body text follows.
+
+-------------------------------------------------------------------------------
+
+(document
+  (abbreviation_definition
+    (abbreviation_marker)
+    expansion: (abbreviation_expansion))
+  (abbreviation_definition
+    (abbreviation_marker)
+    expansion: (abbreviation_expansion))
+  (paragraph))
+
+===============================================================================
+Abbreviation definition: strong-emphasis with bracketed-link stays as strong
+===============================================================================
+*[*](y)
+
+-------------------------------------------------------------------------------
+
+(document
+  (paragraph
+    (strong
+      (strong_begin)
+      (content)
+      (strong_end))))

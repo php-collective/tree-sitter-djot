@@ -1,5 +1,31 @@
 [
   {
+    "type": "abbreviation_definition",
+    "named": true,
+    "fields": {
+      "expansion": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "abbreviation_expansion",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "abbreviation_marker",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "args",
     "named": true,
     "fields": {},
@@ -211,6 +237,10 @@
       "required": false,
       "types": [
         {
+          "type": "abbreviation_definition",
+          "named": true
+        },
+        {
           "type": "autolink",
           "named": true
         },
@@ -406,6 +436,10 @@
       "required": false,
       "types": [
         {
+          "type": "abbreviation_definition",
+          "named": true
+        },
+        {
           "type": "block_attribute",
           "named": true
         },
@@ -559,6 +593,10 @@
       "required": false,
       "types": [
         {
+          "type": "abbreviation_definition",
+          "named": true
+        },
+        {
           "type": "block_attribute",
           "named": true
         },
@@ -706,6 +744,10 @@
       "multiple": true,
       "required": false,
       "types": [
+        {
+          "type": "abbreviation_definition",
+          "named": true
+        },
         {
           "type": "block_attribute",
           "named": true
@@ -1745,6 +1787,10 @@
       "required": false,
       "types": [
         {
+          "type": "abbreviation_definition",
+          "named": true
+        },
+        {
           "type": "block_attribute",
           "named": true
         },
@@ -2195,6 +2241,10 @@
       "multiple": true,
       "required": false,
       "types": [
+        {
+          "type": "abbreviation_definition",
+          "named": true
+        },
         {
           "type": "block_attribute",
           "named": true
@@ -2968,6 +3018,14 @@
   {
     "type": "_",
     "named": false
+  },
+  {
+    "type": "abbreviation_expansion",
+    "named": true
+  },
+  {
+    "type": "abbreviation_marker",
+    "named": true
   },
   {
     "type": "backslash_escape",
