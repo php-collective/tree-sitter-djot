@@ -100,6 +100,32 @@
     }
   },
   {
+    "type": "caption",
+    "named": true,
+    "fields": {
+      "content": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "caption_content",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "caption_marker",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "checked",
     "named": true,
     "fields": {}
@@ -258,6 +284,10 @@
         },
         {
           "type": "block_quote_marker",
+          "named": true
+        },
+        {
+          "type": "caption",
           "named": true
         },
         {
@@ -456,6 +486,10 @@
           "named": true
         },
         {
+          "type": "caption",
+          "named": true
+        },
+        {
           "type": "code_block",
           "named": true
         },
@@ -610,6 +644,10 @@
         },
         {
           "type": "block_quote",
+          "named": true
+        },
+        {
+          "type": "caption",
           "named": true
         },
         {
@@ -770,6 +808,10 @@
         },
         {
           "type": "block_quote_marker",
+          "named": true
+        },
+        {
+          "type": "caption",
           "named": true
         },
         {
@@ -1819,6 +1861,10 @@
           "named": true
         },
         {
+          "type": "caption",
+          "named": true
+        },
+        {
           "type": "code_block",
           "named": true
         },
@@ -2271,6 +2317,10 @@
         },
         {
           "type": "block_quote",
+          "named": true
+        },
+        {
+          "type": "caption",
           "named": true
         },
         {
@@ -3057,6 +3107,14 @@
   },
   {
     "type": "block_quote_marker",
+    "named": true
+  },
+  {
+    "type": "caption_content",
+    "named": true
+  },
+  {
+    "type": "caption_marker",
     "named": true
   },
   {

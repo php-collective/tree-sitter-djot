@@ -60,6 +60,7 @@ module.exports = grammar({
         $.link_reference_definition,
         $.abbreviation_definition,
         $.fenced_comment_block,
+        $.caption,
         $.block_attribute,
         $._paragraph,
       ),
@@ -540,6 +541,31 @@ module.exports = grammar({
         $._newline,
       ),
     link_destination: (_) => /\S+/,
+
+    // djot-php caption block: `^ caption text` on its own line.
+    //
+    // In djot-php this is semantically a caption for the immediately
+    // preceding image / table / blockquote. Tree-sitter has no lookback for
+    // that context, so we recognize `^ TEXT` at block-line start regardless
+    // of what precedes; the renderer (djot-php) decides whether to associate
+    // it with a sibling block. Worst case for editors: a stray `^ foo` away
+    // from a target block gets caption-style coloring without being a
+    // real caption.
+    //
+    // v1 limitation: requires a blank line above the caption for highlight
+    // recognition (so it starts a new block rather than continuing the
+    // previous paragraph). djot-php itself renders both forms correctly;
+    // a future fork commit can route this through the external scanner to
+    // make `^ ` at line start always terminate paragraph continuation.
+    //
+    // Table captions remain handled by the existing table_caption rule via
+    // the external scanner — this caption block is the standalone form.
+    caption: ($) =>
+      seq(
+        alias(token(seq("^", /[ \t]/)), $.caption_marker),
+        field("content", alias(/[^\r\n]+/, $.caption_content)),
+        $._newline,
+      ),
 
     // djot-php fenced comment block: %%%...%%%. Multi-line block-level
     // comment that may contain blank lines (unlike the inline {%...%} form).

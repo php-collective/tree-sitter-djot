@@ -186,3 +186,42 @@ Still typing the comment
 
 (document
   (paragraph))
+
+===============================================================================
+Caption: standalone after blank line
+===============================================================================
+![Alt text](image.png)
+
+^ Figure 1: a description.
+
+Body.
+
+-------------------------------------------------------------------------------
+
+(document
+  (paragraph
+    (inline_image
+      description: (image_description)
+      destination: (inline_link_destination)))
+  (caption
+    (caption_marker)
+    content: (caption_content))
+  (paragraph))
+
+===============================================================================
+Caption: tab-separated marker
+===============================================================================
+> Quote line.
+
+^	Caption with tab.
+
+-------------------------------------------------------------------------------
+
+(document
+  (block_quote
+    (block_quote_marker)
+    content: (content
+      (paragraph)))
+  (caption
+    (caption_marker)
+    content: (caption_content)))

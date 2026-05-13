@@ -191,6 +191,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "caption"
+        },
+        {
+          "type": "SYMBOL",
           "name": "block_attribute"
         },
         {
@@ -2603,6 +2607,49 @@
     "link_destination": {
       "type": "PATTERN",
       "value": "\\S+"
+    },
+    "caption": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "TOKEN",
+            "content": {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "^"
+                },
+                {
+                  "type": "PATTERN",
+                  "value": "[ \\t]"
+                }
+              ]
+            }
+          },
+          "named": true,
+          "value": "caption_marker"
+        },
+        {
+          "type": "FIELD",
+          "name": "content",
+          "content": {
+            "type": "ALIAS",
+            "content": {
+              "type": "PATTERN",
+              "value": "[^\\r\\n]+"
+            },
+            "named": true,
+            "value": "caption_content"
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_newline"
+        }
+      ]
     },
     "fenced_comment_block": {
       "type": "TOKEN",
