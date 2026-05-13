@@ -1,8 +1,18 @@
 #include "tree_sitter/alloc.h"
 #include "tree_sitter/array.h"
 #include "tree_sitter/parser.h"
-#include <ctype.h>
 #include <stdio.h>
+
+// WASM-host compatibility: avoid linking against libc's ctype helpers.
+// Some Tree-sitter consumers (e.g. Zed via wasi-sdk + wasmtime) cannot
+// resolve `isalnum` as an import. The lookahead is a Unicode codepoint
+// (int32_t); for the syntax we use this in (identifier-style tokens), the
+// ASCII alphanumeric range is sufficient.
+static inline bool djot_is_alnum_ascii(int32_t c) {
+    return (c >= '0' && c <= '9')
+        || (c >= 'A' && c <= 'Z')
+        || (c >= 'a' && c <= 'z');
+}
 
 // #define DEBUG
 
@@ -517,7 +527,7 @@ static bool handle_blocks_to_close(Scanner *s, TSLexer *lexer) {
 static bool scan_identifier(Scanner *s, TSLexer *lexer) {
   bool any_scanned = false;
   while (!lexer->eof(lexer)) {
-    if (isalnum(lexer->lookahead) || lexer->lookahead == '-' ||
+    if (djot_is_alnum_ascii(lexer->lookahead) || lexer->lookahead == '-' ||
         lexer->lookahead == '_') {
       any_scanned = true;
       advance(s, lexer);
