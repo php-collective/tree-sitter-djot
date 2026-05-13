@@ -298,3 +298,17 @@ Body resumes.
   (paragraph)
   (fenced_comment_block)
   (paragraph))
+
+===============================================================================
+Fenced comment: outer %%%% wraps inner %%% as content
+===============================================================================
+%%%%
+%%%
+inner triple-percent stays as content
+%%%
+%%%%
+
+-------------------------------------------------------------------------------
+
+(document
+  (fenced_comment_block))

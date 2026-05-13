@@ -567,27 +567,62 @@ module.exports = grammar({
         $._newline,
       ),
 
-    // djot-php fenced comment block: %%%...%%%. Multi-line block-level
-    // comment that may contain blank lines (unlike the inline {%...%} form).
+    // djot-php fenced comment block: matches djot-php's parseFencedComment
+    // semantics — opener is N `%` (N >= 3), closer must be N or more `%`,
+    // body may contain shorter `%`-runs as content (including pure `%%%`
+    // lines as content inside a `%%%%` block).
     //
-    // Captured as a single token so the lexer commits only when a closing
-    // fence is found. An unterminated opening `%%%` (mid-typing) falls
-    // through to text.
+    // Tree-sitter regex has no backreferences, so we encode each supported
+    // fence length as a separate alternative. The lexer picks the longest
+    // match overall, so an outer `%%%%` wins over an inner `%%%` close-
+    // attempt. Lengths 3–6 cover real usage.
     //
-    // Both the opener and the closer may be indented — that handles `%%%`
-    // appearing inside a list item or div. The body skips lines containing
-    // `%%%` only at the very start to avoid an accidental early close on a
-    // sentence that happens to start with `%%%`.
+    // Body line pattern for length N: optional indent, then up to N-1
+    // leading `%`s, optionally followed by non-`%` content. Blank lines
+    // also allowed.
     fenced_comment_block: (_) =>
       token(
-        seq(
-          /[ \t]*/,
-          "%%%",
-          /[^\n]*\n/,
-          /(?:[ \t]*(?:[^%\n][^\n]*|%[^%\n][^\n]*|%%[^%\n][^\n]*)?\n|\n)*/,
-          /[ \t]*/,
-          "%%%",
-          /\n?/,
+        choice(
+          // length 6 — body may contain up to 5 leading %s.
+          seq(
+            /[ \t]*/,
+            "%%%%%%",
+            /[^\n]*\n/,
+            /(?:[ \t]*%{0,5}(?:[^%\n][^\n]*)?\n|\n)*/,
+            /[ \t]*/,
+            "%%%%%%",
+            /\n?/,
+          ),
+          // length 5 — body may contain up to 4 leading %s.
+          seq(
+            /[ \t]*/,
+            "%%%%%",
+            /[^\n]*\n/,
+            /(?:[ \t]*%{0,4}(?:[^%\n][^\n]*)?\n|\n)*/,
+            /[ \t]*/,
+            "%%%%%",
+            /\n?/,
+          ),
+          // length 4 — body may contain up to 3 leading %s.
+          seq(
+            /[ \t]*/,
+            "%%%%",
+            /[^\n]*\n/,
+            /(?:[ \t]*%{0,3}(?:[^%\n][^\n]*)?\n|\n)*/,
+            /[ \t]*/,
+            "%%%%",
+            /\n?/,
+          ),
+          // length 3 — body may contain up to 2 leading %s.
+          seq(
+            /[ \t]*/,
+            "%%%",
+            /[^\n]*\n/,
+            /(?:[ \t]*%{0,2}(?:[^%\n][^\n]*)?\n|\n)*/,
+            /[ \t]*/,
+            "%%%",
+            /\n?/,
+          ),
         ),
       ),
 
