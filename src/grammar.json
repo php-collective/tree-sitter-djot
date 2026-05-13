@@ -3016,6 +3016,14 @@
                     }
                   },
                   {
+                    "type": "PREC_DYNAMIC",
+                    "value": 200,
+                    "content": {
+                      "type": "SYMBOL",
+                      "name": "wikilink"
+                    }
+                  },
+                  {
                     "type": "SYMBOL",
                     "name": "autolink"
                   },
@@ -3190,6 +3198,47 @@
           "value": ">"
         }
       ]
+    },
+    "wikilink": {
+      "type": "TOKEN",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "[["
+          },
+          {
+            "type": "PATTERN",
+            "value": "[^\\]|\\r\\n]+"
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "STRING",
+                    "value": "|"
+                  },
+                  {
+                    "type": "PATTERN",
+                    "value": "[^\\]\\r\\n]+"
+                  }
+                ]
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          },
+          {
+            "type": "STRING",
+            "value": "]]"
+          }
+        ]
+      }
     },
     "symbol": {
       "type": "TOKEN",

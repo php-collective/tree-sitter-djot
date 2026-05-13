@@ -648,6 +648,10 @@ module.exports = grammar({
               prec.dynamic(ELEMENT_PRECEDENCE, $.footnote_reference),
               prec.dynamic(ELEMENT_PRECEDENCE, $._image),
               prec.dynamic(ELEMENT_PRECEDENCE, $._link),
+              // djot-php WikilinksExtension: `[[Page]]` or `[[page|Display]]`.
+              // Higher dynamic precedence so `[[…]]` wins over two adjacent
+              // `[` link_text starts.
+              prec.dynamic(2 * ELEMENT_PRECEDENCE, $.wikilink),
               $.autolink,
               $.verbatim,
               alias($.inline_math, $.math),
@@ -690,6 +694,27 @@ module.exports = grammar({
     backslash_escape: (_) => /\\[^\r\n]/,
 
     autolink: (_) => seq("<", /[^>\s]+/, ">"),
+
+    // djot-php WikilinksExtension. Syntax: `[[target]]` or `[[target|label]]`.
+    //
+    // Implemented as a single token so an unmatched `[[` (e.g. while the user
+    // is still typing) does not commit and break the surrounding paragraph.
+    // The lexer only consumes the pattern when the full `]]` close is present
+    // on the same line; otherwise the leading `[`s fall through to the regular
+    // bracketed-text / symbol-fallback handling.
+    //
+    // Trade-off: target and label are not separate child nodes. Highlight
+    // queries can color the whole wikilink uniformly. If we later want
+    // per-part captures we can introduce an immediate-token split.
+    wikilink: (_) =>
+      token(
+        seq(
+          "[[",
+          /[^\]|\r\n]+/,
+          optional(seq("|", /[^\]\r\n]+/)),
+          "]]",
+        ),
+      ),
 
     symbol: (_) => token(seq(":", /[\w\d_-]+/, ":")),
 
