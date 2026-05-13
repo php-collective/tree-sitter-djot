@@ -225,3 +225,76 @@ Caption: tab-separated marker
   (caption
     (caption_marker)
     content: (caption_content)))
+
+===============================================================================
+Caption: directly after image (no blank line)
+===============================================================================
+![Alt](img.png)
+^ Figure caption.
+
+-------------------------------------------------------------------------------
+
+(document
+  (paragraph
+    (inline_image
+      description: (image_description)
+      destination: (inline_link_destination)))
+  (caption
+    (caption_marker)
+    content: (caption_content)))
+
+===============================================================================
+Caption: directly after blockquote (no blank line)
+===============================================================================
+> Wise words.
+^ The Author
+
+-------------------------------------------------------------------------------
+
+(document
+  (block_quote
+    (block_quote_marker)
+    content: (content
+      (paragraph)))
+  (caption
+    (caption_marker)
+    content: (caption_content)))
+
+===============================================================================
+Fenced comment: indented inside a list item
+===============================================================================
+- Item with comment below
+  %%%
+  Hidden draft note.
+  %%%
+- Next item
+
+-------------------------------------------------------------------------------
+
+(document
+  (list
+    (list_item
+      marker: (list_marker_dash)
+      content: (list_item_content
+        (paragraph)
+        (fenced_comment_block)))
+    (list_item
+      marker: (list_marker_dash)
+      content: (list_item_content
+        (paragraph)))))
+
+===============================================================================
+Fenced comment: directly after paragraph (no blank line)
+===============================================================================
+Some text here.
+%%%
+A draft comment.
+%%%
+Body resumes.
+
+-------------------------------------------------------------------------------
+
+(document
+  (paragraph)
+  (fenced_comment_block)
+  (paragraph))

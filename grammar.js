@@ -572,15 +572,20 @@ module.exports = grammar({
     //
     // Captured as a single token so the lexer commits only when a closing
     // fence is found. An unterminated opening `%%%` (mid-typing) falls
-    // through to text. Restriction: closing `%%%` must be at column 0, on
-    // its own line; nesting inside divs/lists is not handled (acceptable
-    // for v1 — vast majority of usage is top-level draft commentary).
+    // through to text.
+    //
+    // Both the opener and the closer may be indented — that handles `%%%`
+    // appearing inside a list item or div. The body skips lines containing
+    // `%%%` only at the very start to avoid an accidental early close on a
+    // sentence that happens to start with `%%%`.
     fenced_comment_block: (_) =>
       token(
         seq(
+          /[ \t]*/,
           "%%%",
           /[^\n]*\n/,
-          /(?:[^%\n][^\n]*\n|%[^%\n][^\n]*\n|%%[^%\n][^\n]*\n|\n)*/,
+          /(?:[ \t]*(?:[^%\n][^\n]*|%[^%\n][^\n]*|%%[^%\n][^\n]*)?\n|\n)*/,
+          /[ \t]*/,
           "%%%",
           /\n?/,
         ),

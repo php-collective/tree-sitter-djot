@@ -2657,6 +2657,10 @@
         "type": "SEQ",
         "members": [
           {
+            "type": "PATTERN",
+            "value": "[ \\t]*"
+          },
+          {
             "type": "STRING",
             "value": "%%%"
           },
@@ -2666,7 +2670,11 @@
           },
           {
             "type": "PATTERN",
-            "value": "(?:[^%\\n][^\\n]*\\n|%[^%\\n][^\\n]*\\n|%%[^%\\n][^\\n]*\\n|\\n)*"
+            "value": "(?:[ \\t]*(?:[^%\\n][^\\n]*|%[^%\\n][^\\n]*|%%[^%\\n][^\\n]*)?\\n|\\n)*"
+          },
+          {
+            "type": "PATTERN",
+            "value": "[ \\t]*"
           },
           {
             "type": "STRING",

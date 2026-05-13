@@ -2347,6 +2347,40 @@ static bool scan_block_math_marker(Scanner *s, TSLexer *lexer) {
   return true;
 }
 
+// djot-php standalone caption: a line starting with `^ ` (caret + space or
+// tab) at block position must terminate any paragraph that was continuing,
+// so the caption rule can fire as a sibling block. The advance() calls here
+// are scratch — they don't commit (only mark_end commits), so the caption
+// rule itself will still see `^` at the new block-line start.
+static bool scan_caption_at_paragraph_end(Scanner *s, TSLexer *lexer) {
+  if (lexer->lookahead != '^') {
+    return false;
+  }
+  advance(s, lexer);
+  if (lexer->lookahead != ' ' && lexer->lookahead != '\t') {
+    return false;
+  }
+  return true;
+}
+
+// djot-php fenced comment opener `%%%` at line start. Matching here lets a
+// `%%%` line terminate the previous paragraph so the fenced_comment_block
+// token can match it as a sibling block.
+static bool scan_fenced_comment_at_paragraph_end(Scanner *s, TSLexer *lexer) {
+  if (lexer->lookahead != '%') {
+    return false;
+  }
+  advance(s, lexer);
+  if (lexer->lookahead != '%') {
+    return false;
+  }
+  advance(s, lexer);
+  if (lexer->lookahead != '%') {
+    return false;
+  }
+  return true;
+}
+
 static bool close_paragraph(Scanner *s, TSLexer *lexer) {
   // Workaround for not including the following blankline when closing a
   // paragraph inside a block.
@@ -2364,6 +2398,15 @@ static bool close_paragraph(Scanner *s, TSLexer *lexer) {
   }
 
   if (scan_block_math_marker(s, lexer)) {
+    return true;
+  }
+
+  // djot-php-fork additions: `^ ` (caption) and `%%%` (fenced comment) at the
+  // next line's start must close any in-progress paragraph.
+  if (scan_caption_at_paragraph_end(s, lexer)) {
+    return true;
+  }
+  if (scan_fenced_comment_at_paragraph_end(s, lexer)) {
     return true;
   }
 
