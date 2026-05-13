@@ -1,4 +1,12 @@
-# tree-sitter-djot
+# tree-sitter-djot (php-collective fork)
+
+> Fork of [`treeman/tree-sitter-djot`](https://codeberg.org/treeman/tree-sitter-djot) maintained by [php-collective](https://github.com/php-collective).
+>
+> **Why this fork:** Zed's WASM runtime cannot resolve libc `isalnum` from the upstream scanner. This fork carries a one-line ASCII inline replacement so the grammar loads cleanly in Zed and other WASM-host Tree-sitter consumers. The patch is small and we expect to retire the fork once upstream lands an equivalent change.
+>
+> **Also planned for this fork:** djot-php-specific syntax additions (wikilinks `[[Page|label]]`, user mentions, abbreviation definitions `*[KEY]:`, fenced comment blocks `%%%`, captions `^ text`). These will be added as separate commits if upstream doesn't accept them.
+
+---
 
 This is an experimental [Tree-sitter][] grammar for [Djot][].
 
